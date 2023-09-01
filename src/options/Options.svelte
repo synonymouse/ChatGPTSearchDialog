@@ -1,52 +1,42 @@
-<script lang="ts">
-  const crx = 'create-chrome-ext'
+<script lang='ts'>
+	import { tokenStore } from '../stores';
+	import { removeStorageData, setStorageData } from '../helpers/storage';
+
+	let tokenValue = '';
+
+	const saveToken = () => {
+		setStorageData('token', tokenValue, () => tokenStore.update((token) => token = tokenValue));
+	};
+
+	const resetToken = () => {
+		removeStorageData('token', () => tokenStore.update((token) => token = ''));
+	};
+
 </script>
 
 <main>
-  <h3>Options Page!</h3>
-
-  <h6>v 0.0.0</h6>
-
-  <a href="https://www.npmjs.com/package/create-chrome-ext" target="_blank">Power by {crx}</a>
+	{#if $tokenStore}
+		<div>
+			<p>Current token: {$tokenStore}</p>
+			<button on:click={resetToken}>Reset Token</button>
+		</div>
+	{:else}
+		<div>
+			<input type='text' placeholder='Enter your token here' bind:value={tokenValue} />
+			<button on:click={saveToken}>Save Token</button>
+		</div>
+	{/if}
 </main>
 
 <style>
   :root {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-      'Open Sans', 'Helvetica Neue', sans-serif;
+    'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   main {
     text-align: center;
     padding: 1em;
     margin: 0 auto;
-  }
-
-  h3 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 1.5rem;
-    font-weight: 200;
-    line-height: 1.2rem;
-    margin: 2rem auto;
-  }
-
-  h6 {
-    font-size: 0.5rem;
-    color: #333333;
-    margin: 0.5rem;
-  }
-
-  a {
-    font-size: 0.5rem;
-    margin: 0.5rem;
-    color: #cccccc;
-    text-decoration: none;
-  }
-
-  @media (min-width: 480px) {
-    h3 {
-      max-width: none;
-    }
   }
 </style>

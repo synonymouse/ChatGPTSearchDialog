@@ -1,19 +1,15 @@
-<script lang="ts">
-  const crx = 'create-chrome-ext'
+<script>
+	import List from '../components/List.svelte';
 </script>
 
-<main>
-  <h3>Popup Page!</h3>
 
-  <h6>v 0.0.0</h6>
+<List />
 
-  <a href="https://www.npmjs.com/package/create-chrome-ext" target="_blank">Power by {crx}</a>
-</main>
 
 <style>
   :root {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-      'Open Sans', 'Helvetica Neue', sans-serif;
+    'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   :global(body) {
