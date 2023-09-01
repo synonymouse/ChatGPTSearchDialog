@@ -1,18 +1,26 @@
 <script lang='ts'>
-	import { Conversations, getConversationsApi } from '../api/getConversations';
+	import { Conversations, getAllConversationsApi, getConversationsApi } from '../api/getConversations';
 	import { tokenStore } from '../stores';
+	import { TARGET_DOMAIN } from '../consts';
 
-	let data: Conversations | null = null;
+	let data: Conversations | null | undefined = null;
+	let { loaded: loadedDialogs, total: totalDialogs } = {
+		loaded: 0,
+		total: 0,
+	};
 
 
 	tokenStore.subscribe(async (token) => {
 		if (token) {
-			data = await getConversationsApi(token);
+			data = await getAllConversationsApi(token, (loaded, total) => {
+				loadedDialogs = loaded;
+				totalDialogs = total;
+			});
 		}
 	});
 
 	const navigate = (id: string) => {
-		const url = `https://chat.openai.com/c/${id}`;
+		const url = `${TARGET_DOMAIN}/c/${id}`;
 
 		chrome.tabs.update({ url });
 	};
@@ -27,11 +35,11 @@
 				{/each}
 			</ul>
 		{:else}
-			<p>Loading...</p>
+			<p>Loading dialogs {loadedDialogs + '/' + totalDialogs}</p>
 		{/if}
 	</div>
 {:else}
-	<div>
-		Установите токен
-	</div>
+	<a href={chrome.runtime.getURL('options.html')} target='_blank'>
+		Setup token
+	</a>
 {/if}
