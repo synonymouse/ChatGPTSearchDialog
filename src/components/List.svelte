@@ -1,8 +1,8 @@
-<script>
-	import { getConversationsApi } from '../api/getConversations';
+<script lang='ts'>
+	import { Conversations, getConversationsApi } from '../api/getConversations';
 	import { tokenStore } from '../stores';
 
-	let data = null;
+	let data: Conversations | null = null;
 
 
 	tokenStore.subscribe(async (token) => {
@@ -11,15 +11,19 @@
 		}
 	});
 
-	$: console.log(data, 'data');
+	const navigate = (id: string) => {
+		const url = `https://chat.openai.com/c/${id}`;
+
+		chrome.tabs.update({ url });
+	};
 </script>
 
 {#if $tokenStore}
 	<div>
 		{#if data}
 			<ul>
-				{#each data as item (item.id)}
-					<li>{item.name}</li>
+				{#each data.items as item (item.id)}
+					<li on:click={() => navigate(item.id)}>{item.title}</li>
 				{/each}
 			</ul>
 		{:else}
