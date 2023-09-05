@@ -21,7 +21,7 @@
     "fmt": "prettier --write '**/*.{svelte,ts,json,css,scss,md}'"
   },
   "dependencies": {
-    "@orama/orama": "^1.2.1"
+    "fuse.js": "^6.6.2"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^1.0.12",
